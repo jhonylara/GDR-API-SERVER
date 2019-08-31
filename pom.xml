@@ -1,0 +1,47 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>br.com.backend</groupId>
+	<artifactId>requisitos</artifactId>
+	<version>0.0.1</version>
+	<packaging>war</packaging>
+
+	<properties>
+		 <resteasy.version>3.0.19.Final</resteasy.version>
+	</properties>
+
+	<parent>
+		<groupId>org.demoiselle.jee</groupId>
+		<artifactId>demoiselle-parent-rest</artifactId>
+		<version>3.0.2</version>
+	</parent>
+	
+	<dependencies>
+		<dependency>
+		    <groupId>javax.mail</groupId>
+		    <artifactId>mail</artifactId>
+		    <version>1.4</version>
+		</dependency>
+
+		<dependency>
+	    	<groupId>org.jboss.resteasy</groupId>
+		    <artifactId>resteasy-jaxrs</artifactId>
+		    <version>${resteasy.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-servlet-initializer</artifactId>
+			<version>${resteasy.version}</version>
+		</dependency>
+		
+		
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-multipart-provider</artifactId>
+			<version>${resteasy.version}</version>
+		</dependency>
+		
+	</dependencies>
+</project>

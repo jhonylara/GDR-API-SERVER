@@ -1,0 +1,188 @@
+1 - Crie uma pasta chamada GDR
+1.1 - Crie as seguintes pastas dentro da GDR (ECLIPSE, GIT, JDK, WILDFLY, WORKSPACE)
+
+2 - Baixe o eclipse neon 1 
+	(http://www.eclipse.org/downloads/packages/release/Neon/1)
+2.1 - Extraia na pasta GDR/ECLIPSE
+2.2 - Defina o workspace para a pasta GDR/WORKSPACE
+2.3 - Habilite a visao SEVER em Window > show view > severs
+2.4 - Adicione o plugin do Jboss
+2.4.1 - Clique no link na pagina da view severs, e escolha jboss
+
+3 - Baixe o wildfly 10.1.0 FINAL
+	(http://wildfly.org/downloads/)
+3.1 - Extraia o wildfly na pasta GDR/WILDFLY
+
+4 - Baixar o JDK Kit 8u171 
+	(http://www.oracle.com/technetwork/pt/java/javase/downloads/jdk8-downloads-2133151.html)
+4.1 - instalar o JDK em C:\GDR\JDK
+4.2 - Definir variavel de ambiente em Meu computador / Propiedades / Configurações avançadas / Avançado / Variaveis de Ambiente
+4.3 - Adicionar em Variavel de Sistema JAVA_HOME - C:\GDR\JDK
+
+5 - Adicione o usuario admin no wildfly (windows)
+5.1 - cd GDR\WILDFLY\bin
+5.2 - add-user.bat
+
+	Management User
+	Username: gdradmin
+	Password: gdradmin
+	Yes para 1 digito a menos
+	Nao pertence a nenhum grupo (enter)
+	Confirma para realm yes
+	Recusa para slave no
+
+5.3 - Starte o servido pelo cmd
+5.4 - cd GDR\WILDFLY\bin
+5.5 - standalone.bat
+
+6 - Acesse http://localhost:9990
+	Username: gdradmin
+	Password: gdradmin
+
+6.1 - Em deployment clique em ADD
+6.2 - Upload a new deployment
+6.3 - baixe o driver 42.2.2
+	(https://jdbc.postgresql.org/download.html)
+6.4 - selecione o drivre para o deployment
+6.5 - Deixe os nomes e o enable padrao marcado
+6.6 - Volte para home e selecione Create Datasource
+6.7 - Subsystems > Datasources > Non-XA > ADD
+6.8 - Selecione PostgreSQL Datasource
+	Name - GDR
+	JNDI Name - java:jboss/datasources/GDR
+6.9 - 
+	Detected Driver > postgresql-42-2-2.jar
+
+	Connection URL jdbc:postgresql://localhost:5432/GDR
+	Username gdradmin
+	Password gdradmin
+	Next
+
+7 - Baixe o postgresql 10.4
+	(https://www.postgresql.org/download/)
+7.1 - Instale o banco de dados, defina a senha do usuario gdradmin para gdradmin
+7.2 - Acesse Sever > PostgreSQL 10 > Logingroups roles > botao direito > Create > Login Group roles
+7.3 - Na aba General
+ 		Name > gdradmin
+ 	- Na aba Definition
+ 		Password gdradmin
+ 	- Na aba Privilegies
+ 		Marcar todos menos o ultimo
+ 	SAVE
+7.4 - Acesse Sever > PostgreSQL 10 > Databases > botao direito > create > databases
+7.5 - Na aba General
+ 		Dataase > GDR
+ 		Ownner > gdadmin
+ 	SAVE
+
+8 Baixe o GIT e clone o repositorio na pasta GDR/GIT
+	(https://github.com/jhonylara/GR.git)
+8.1 - Importe o projeto para o eclipse
+8.2 atualize o projeto com maven update project
+
+9 - Inserir no persistence.xml o codigo abaixo
+
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1"
+    xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+    <persistence-unit name="GDR" transaction-type="JTA">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <jta-data-source>java:jboss/datasources/GDR</jta-data-source>
+        <class>br.com.backend.requisitos.entity.Atividade</class>	
+        <class>br.com.backend.requisitos.entity.AtividadeIntegrante</class>
+        <class>br.com.backend.requisitos.entity.CasoDeUso</class>
+        <class>br.com.backend.requisitos.entity.Integrante</class>
+        <class>br.com.backend.requisitos.entity.Projeto</class>
+        <class>br.com.backend.requisitos.entity.ProjetoIntegrante</class>
+        <class>br.com.backend.requisitos.entity.Requisito</class>
+        <class>br.com.backend.requisitos.entity.Usuario</class>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <!-- <properties>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.HSQLDialect" />
+            <property name="hibernate.hbm2ddl.auto" value="create-drop" />
+            <property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.format_sql" value="true" />
+        </properties>
+        -->
+        
+         <properties>
+            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" /> <!-- DB Driver -->
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql:5432//localhost/GDR" /> <!-- BD Mane -->
+            <property name="javax.persistence.jdbc.user" value="gdradmin" /> <!-- DB User -->
+            <property name="javax.persistence.jdbc.password" value="gdradmin" /> <!-- DB Password -->
+
+	    	<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/> <!-- DB Dialect -->
+            <property name="hibernate.hbm2ddl.auto" value="create" /> <!-- create / create-drop / update -->
+            
+            <property name="hibernate.show_sql" value="true" /> <!-- Show SQL in console -->
+            <property name="hibernate.format_sql" value="true" /> <!-- Show SQL formatted -->
+        </properties>
+    </persistence-unit>
+</persistence>
+
+10 - Adicionar o app no servidor, full publish e start sever
+
+
+=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/
+=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/
+
+POSSIVEIS ERROS
+
+(Linux)
+
+Postgres error message: FATAL: Ident authentication failed for user “…”
+
+SENHA OU USUARIOS DO POSTGRES / CONF ERRADOS
+
+ou
+
+acessar a pasta bin do postgres e editar o arquivo pg_ident.conf
+
+/etc/postgresql/.../main/pg_ident.conf
+
+troque tudo de ident para md5 
+
+exemplo:
+host all all 127.0.0.1/32 md5
+
+=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/
+=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/=/
+
+(windowns)
+
+problemas com deploys, verificar standalone.xml
+
+GDR/WILDFLY/STANDALONE/CONFIGURATION/STANDALONE.XML
+
+SUBSTITUIR AS TAGES "datasources" PELO CODIGO ABAIXO
+
+<datasources>
+    <datasource jndi-name="java:jboss/datasources/ExampleDS" pool-name="ExampleDS" enabled="true" use-java-context="true">
+        <connection-url>jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE</connection-url>
+        <driver>h2</driver>
+        <security>
+            <user-name>sa</user-name>
+            <password>sa</password>
+        </security>
+    </datasource>
+    <datasource jta="true" jndi-name="java:jboss/datasources/GDR" pool-name="GDR" enabled="true" use-ccm="true">
+        <connection-url>jdbc:postgresql://localhost:5432/GDR</connection-url>
+        <driver-class>org.postgresql.Driver</driver-class>
+        <driver>postgresql-42.2.2.jar</driver>
+        <security>
+            <user-name>gdradmin</user-name>
+            <password>gdradmin</password>
+        </security>
+        <validation>
+            <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLValidConnectionChecker"/>
+            <background-validation>true</background-validation>
+            <exception-sorter class-name="org.jboss.jca.adapters.jdbc.extensions.postgres.PostgreSQLExceptionSorter"/>
+        </validation>
+    </datasource>
+    <drivers>
+        <driver name="h2" module="com.h2database.h2">
+            <xa-datasource-class>org.h2.jdbcx.JdbcDataSource</xa-datasource-class>
+        </driver>
+    </drivers>
+</datasources>

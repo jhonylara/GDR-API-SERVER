@@ -1,0 +1,2086 @@
+{
+	"info": {
+		"_postman_id": "3ef55c37-0e07-4e63-9d17-206256b85021",
+		"name": "Requisitos",
+		"description": "# Introduction\nWhat does your API do?\n\n# Overview\nThings that the developers should know about\n\n# Authentication\nWhat is the preferred way of using the API?\n\n# Error Codes\nWhat errors and status codes can a user expect?\n\n# Rate limit\nIs there a limit to the number of requests an user can send?",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Usuario",
+			"item": [
+				{
+					"name": "Cria usuário 1",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3a7154c9-dfed-49b7-bad1-24716b36cdb4",
+								"exec": [
+									"var JsonResponse = JSON.parse(request.data);",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    var statusSucess = pm.response.to.have.status(200);",
+									"    ",
+									"    if(statusSucess) {",
+									"        const echoPostRequest = {",
+									"          url: pm.environment.get(\"URL\") + 'api/usuario/auth',",
+									"          method: 'POST',",
+									"          header: 'Content-Type:application/json',",
+									"          body: {",
+									"            mode: 'raw',",
+									"            raw: JSON.stringify({ email: JsonResponse.email, senha: JsonResponse.senha })",
+									"          }",
+									"        };",
+									"",
+									"        pm.sendRequest(echoPostRequest, function (err, response) {",
+									"            var jsonData = response.json();",
+									"            postman.setEnvironmentVariable(\"access_token\", jsonData.token);",
+									"        });",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Alisson Labres\",\n    \"email\" : \"alisson@gmail.com\",\n    \"senha\" : \"123456789\"\n}"
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario"
+							]
+						},
+						"description": "Criar usuário"
+					},
+					"response": []
+				},
+				{
+					"name": "Cria usuário 2",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Diogo Augusto Pereira Barros\",\n    \"email\" : \"diogo@gmail.com\",\n    \"senha\" : \"123456789\"\n}"
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar todos usuarios",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{URL}}/api/usuario/list",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"api",
+								"usuario",
+								"list"
+							]
+						},
+						"description": "Buscar todos os usuários cadastrados"
+					},
+					"response": []
+				},
+				{
+					"name": "Excluir usuário",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/1",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Alterar usuário",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"nome\": \"Alisson Labres Gimenes\",\n    \"email\" : \"alisson@gmail.com\",\n    \"senha\" : \"1234567890\"\n}"
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/1",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c3ce2fbf-b999-47b3-ac5c-f3a1826d8c8b",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"access_token\", jsonData.token);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"alisson@gmail.com\",\n\t\"senha\": \"123456789\"\n}"
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/auth",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"auth"
+							]
+						},
+						"description": "Pegar token de usuário"
+					},
+					"response": []
+				},
+				{
+					"name": "Auth 2",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"diogo@gmail.com\",\n\t\"senha\": \"123456789\"\n}"
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/auth",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"auth"
+							]
+						},
+						"description": "Pegar token de usuário"
+					},
+					"response": []
+				},
+				{
+					"name": "Valida senha",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"alisson@gmail.com\",\n\t\"senha\": \"0987654321\"\n}"
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/valida-senha/15E2B",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"valida-senha",
+								"15E2B"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Esqueci senha",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"email\": \"alisson@gmail.com\"\n}"
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/esqueceu-senha",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"esqueceu-senha"
+							]
+						},
+						"description": "Esqueci senha gerando código"
+					},
+					"response": []
+				}
+			],
+			"description": "CRUD Usuario"
+		},
+		{
+			"name": "Projeto",
+			"item": [
+				{
+					"name": "Criar Projeto 1",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"PBL\",\n  \"dataInicio\": \"10/06/2018\",\n  \"dataFim\": \"26/06/2018\",\n  \"status\": \"Criando\"\n}"
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/1/projeto",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1",
+								"projeto"
+							]
+						},
+						"description": "Criar projeto"
+					},
+					"response": []
+				},
+				{
+					"name": "Criar Projeto 2",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"Gerenciamento de requisitos\",\n  \"dataInicio\": \"23/06/2018\",\n  \"dataFim\": \"26/07/2018\",\n  \"status\": \"Criando\"\n}"
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/2/projeto",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"2",
+								"projeto"
+							]
+						},
+						"description": "Criar projeto"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar todos projetos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/1/projeto/list",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1",
+								"projeto",
+								"list"
+							]
+						},
+						"description": "Buscar todos os projetos"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar especifico projeto",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/1/projeto/1",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1",
+								"projeto",
+								"1"
+							]
+						},
+						"description": "Buscar por projeto especifico"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar especifico projeto 2",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/2/projeto/2",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"2",
+								"projeto",
+								"2"
+							]
+						},
+						"description": "Buscar por projeto especifico 02"
+					},
+					"response": []
+				},
+				{
+					"name": "Alterar Projeto",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"nome\": \"ALTERAR PROJETO\",\n\t\"dataInicio\": \"15/06/2018\",\n\t\"dataFim\": \"26/06/2018\",\n\t\"status\": \"Implementando\"\n}"
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/1/projeto/1",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1",
+								"projeto",
+								"1"
+							]
+						},
+						"description": "Alterar projeto"
+					},
+					"response": []
+				},
+				{
+					"name": "Excluir projeto",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{URL}}api/usuario/1/projeto/1",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1",
+								"projeto",
+								"1"
+							]
+						},
+						"description": "Excluir um projetos especifico"
+					},
+					"response": []
+				}
+			],
+			"description": "CRUD projeto\n"
+		},
+		{
+			"name": "Integrante",
+			"item": [
+				{
+					"name": "Adicionar Integrante Projeto",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"perfilIntegrante\": \"Desenvolvedor\"\n}"
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/2/projeto/1/integrante",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"2",
+								"projeto",
+								"1",
+								"integrante"
+							]
+						},
+						"description": "Adicionar novo integrante em projeto"
+					},
+					"response": []
+				},
+				{
+					"name": "Adicionar Integrante Projeto 2",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"perfilIntegrante\": \"Desenvolvedor\"\n}"
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/2/projeto/1/integrante",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"2",
+								"projeto",
+								"1",
+								"integrante"
+							]
+						},
+						"description": "Adicionar novo integrante em projeto"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar todos integrates projeto 1",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/1/projeto/1/integrante/list",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"integrante",
+								"list"
+							]
+						},
+						"description": "Buscar todos integrantes do Projeto 01"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar todos integrates projeto 2",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/2/projeto/2/integrante/list",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"2",
+								"projeto",
+								"2",
+								"integrante",
+								"list"
+							]
+						},
+						"description": "Buscar todos integrantes do projeto 02\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar especifico integrante projeto 01",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/1/projeto/1/integrante/1",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"integrante",
+								"1"
+							]
+						},
+						"description": "Buscar um integrante especifico pelo projeto 01"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar especifico integrante projeto 02",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/2/projeto/2/integrante/2",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"2",
+								"projeto",
+								"2",
+								"integrante",
+								"2"
+							]
+						},
+						"description": "Buscar um integrante especifico pelo projeto 02"
+					},
+					"response": []
+				},
+				{
+					"name": "Alterar Integrante",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"perfilIntegrante\": \"Desenvolvedor\"\n}"
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/1/projeto/1/integrante/2",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"integrante",
+								"2"
+							]
+						},
+						"description": "Alterar integrante"
+					},
+					"response": []
+				},
+				{
+					"name": "Excluir integrante",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "{{URL}}api/usuario/1/projeto/1/integrante/2",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"integrante",
+								"2"
+							]
+						},
+						"description": "Excluir integrante especifico"
+					},
+					"response": []
+				}
+			],
+			"description": "CRUD Integrante"
+		},
+		{
+			"name": "Requisito",
+			"item": [
+				{
+					"name": "Criar Requisito",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"idRequisito\": \"1\",\n  \"nome\": \"Requisito\",\n  \"descricao\": \"Manter requisito em um projeto.\",\n  \"importancia\": \"Importante\",\n  \"fonte\": \"Cliente\",\n  \"categoria\": \"Funcional\",\n  \"status\": \"Criando\"\n}"
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/1/projeto/1/requisito",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"requisito"
+							]
+						},
+						"description": "Criar um requisito"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar todos requisitos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/1/projeto/1/requisito/list",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"requisito",
+								"list"
+							]
+						},
+						"description": "Buscar todos os requisitos"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar requisito especifico",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/1/projeto/1/requisito/1",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"requisito",
+								"1"
+							]
+						},
+						"description": "Buscar um requisito especifico dentro de um projeto\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Alterar requisito",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"idRequisito\": \"1.3\",\n  \"nome\": \"Requisito\",\n  \"descricao\": \"Permitir apenas Gerente alterar requisito.\",\n  \"importancia\": \"Importante\",\n  \"fonte\": \"Cliente\",\n  \"categoria\": \"Funcional\",\n  \"status\": \"Implementando\"\n}"
+						},
+						"url": {
+							"raw": "{{URL}}api/projeto/1/requisito/1",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"projeto",
+								"1",
+								"requisito",
+								"1"
+							]
+						},
+						"description": "Alterar requisito"
+					},
+					"response": []
+				},
+				{
+					"name": "Excluir requisito",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{URL}}api/projeto/1/requisito/1",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"projeto",
+								"1",
+								"requisito",
+								"1"
+							]
+						},
+						"description": "Excluir requisito"
+					},
+					"response": []
+				}
+			],
+			"description": "CRUD requisito"
+		},
+		{
+			"name": "Caso de Uso",
+			"item": [
+				{
+					"name": "Criar caso de uso",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"nome\": \"Criar caso de uso\",\n\t\"escopo\": \"Criar caso de uso\",\n\t\"nivel\": \"Alto\",\n\t\"preCondicao\": \"Obter um projeto\",\n\t\"posCondicao\": \"Retornar para projetos\",\n\t\"cenarioPrincipal\": \"Preencher todos os campos e adicionar um novo projeto\",\n\t\"extensao\": \"Não preencher os campos corretamente, assim não poderá adicionar um novo caso de uso\",\n\t\"atorPrincipal\": \"Negocio\",\n\t\"status\": \"Criando\"\n}"
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/1/projeto/1/casoDeUso",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"casoDeUso"
+							]
+						},
+						"description": "Criar um caso de uso"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar todos os Casos de uso",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/1/projeto/1/casoDeUso/list",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"casoDeUso",
+								"list"
+							]
+						},
+						"description": "buscar todos os casos de uso do projeto 01"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Caso de uso especifico",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/1/projeto/1/casoDeUso/1",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"casoDeUso",
+								"1"
+							]
+						},
+						"description": "buscar caso de uso especifico do projeto 01"
+					},
+					"response": []
+				},
+				{
+					"name": "Alterar caso de uso",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"nome\": \"Criar caso de uso\",\n\t\"escopo\": \"Criar caso de uso\",\n\t\"nivel\": \"Medio\",\n\t\"preCondicao\": \"Obter um projeto\",\n\t\"posCondicao\": \"Retornar para projetos\",\n\t\"cenarioPrincipal\": \"Preencher todos os campos e adicionar um novo projeto\",\n\t\"extensao\": \"Não preencher os campos corretamente, assim não poderá adicionar um novo caso de uso\",\n\t\"atorPrincipal\": \"Cliente\",\n\t\"status\": \"Implementando\"\n}"
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/1/projeto/1/casoDeUso/1",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"casoDeUso",
+								"1"
+							]
+						},
+						"description": "Alterar um caso de uso"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete caso de uso",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/1/projeto/1/casoDeUso/1",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"casoDeUso",
+								"1"
+							]
+						},
+						"description": "Delete um caso de uso"
+					},
+					"response": []
+				}
+			],
+			"description": "CRUD caso de uso\n"
+		},
+		{
+			"name": "Atividade",
+			"item": [
+				{
+					"name": "Criar atividade 1",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"Criar Atividade\",\n  \"descricao\": \"Deverá criar a vinculação de uma atividade a um requisito\",\n  \"status\": \"Implementando\",\n  \"dataInicio\": \"20/06/2018\",\n  \"dataFim\": \"18/07/2018\",\n  \"idDesenvolvedor\": 1\n}"
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/1/projeto/1/requisito/1/atividade",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"requisito",
+								"1",
+								"atividade"
+							]
+						},
+						"description": "Criar atividade 01 no requisito e projeto 01"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Atividades requisito",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/1/projeto/1/requisito/1/atividade/listaRequisito",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"requisito",
+								"1",
+								"atividade",
+								"listaRequisito"
+							]
+						},
+						"description": "Buscar todas as atividades de um requisito"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Atividades projeto",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/1/projeto/1/requisito/0/atividade/listaProjeto",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"requisito",
+								"0",
+								"atividade",
+								"listaProjeto"
+							]
+						},
+						"description": "Buscar todas as atividades de um projeto\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar Atividade  especifica projeto",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/1/projeto/1/requisito/0/atividade/1",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"requisito",
+								"0",
+								"atividade",
+								"1"
+							]
+						},
+						"description": "Buscar todas as atividades de um projeto\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Alterar atividade 1",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"nome\": \"Criar Atividade\",\n  \"descricao\": \"Deverá criar a vinculação de uma atividade a um requisito\",\n  \"status\": \"Concluido\"\n  \"dataInicio\": \"20/06/2018\",\n  \"dataFim\": \"18/07/2018\",\n  \"dataConclusao\": \"08/07/2018\"\n}"
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/1/projeto/1/requisito/1/atividade/1",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"requisito",
+								"1",
+								"atividade",
+								"1"
+							]
+						},
+						"description": "Atividade atividade 01 no requisito e projeto 01"
+					},
+					"response": []
+				},
+				{
+					"name": "Excluir atividade 1",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"nome\": \"Alterar Atividade\",\n\t\"descricao\": \"Deverá alterar a atividade criada\",\n\t\"status\": 2,\n\t\"dataInicio\": \"2018-06-20\",\n\t\"dataFim\": \"2018-07-18\"\n}"
+						},
+						"url": {
+							"raw": "{{URL}}api/projeto/1/requisito/1/atividade/1",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"projeto",
+								"1",
+								"requisito",
+								"1",
+								"atividade",
+								"1"
+							]
+						},
+						"description": "Excluir atividade 01"
+					},
+					"response": []
+				}
+			],
+			"description": "Todos os serviços de uma Atividade."
+		},
+		{
+			"name": "Arquivo",
+			"item": [
+				{
+					"name": "Salvar arquivo artefato",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "multipart/form-data",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "",
+									"type": "file",
+									"src": ""
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/1/projeto/1/artefato/1/arquivo",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"artefato",
+								"1",
+								"arquivo"
+							]
+						},
+						"description": "Salvar arquivo em artefato 02 - Podendo ser ele sem Caso de uso ou com Caso de uso"
+					},
+					"response": []
+				},
+				{
+					"name": "Salvar arquivo artefato 02",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "multipart/form-data",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "",
+									"type": "file",
+									"src": ""
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/1/projeto/1/artefato/2/anexar",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"artefato",
+								"2",
+								"anexar"
+							]
+						},
+						"description": "Salvar arquivo em artefato 02 - Podendo ser ele sem Caso de uso ou com Caso de uso"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar arquivo/artefato",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/1/projeto/1/artefato/1/arquivo/1",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"artefato",
+								"1",
+								"arquivo",
+								"1"
+							]
+						},
+						"description": "Buscar Arquivo especifico por artefato.\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar arquivo/artefato 02",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/1/projeto/1/artefato/2/arquivo/1",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"artefato",
+								"2",
+								"arquivo",
+								"1"
+							]
+						},
+						"description": "Buscar Arquivo especifico por artefato.\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Alterar arquivo/artefato",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "multipart/form-data",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "",
+									"type": "file",
+									"src": ""
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/1/projeto/1/artefato/1/arquivo/1",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"artefato",
+								"1",
+								"arquivo",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Artefato",
+			"item": [
+				{
+					"name": "Salvar artefato com Requisito/Caso de uso",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"nome\": \"Artefato/Requisito/Caso de uso\",\n\t\"descricao\": \"Descricao artefato requisito e caso de uso\",\n\t\"idRequisito\": \"1\",\n\t\"idCasoDeUso\": \"1\"\n}"
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/1/projeto/1/artefato",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"artefato"
+							]
+						},
+						"description": "Anexar artefato com requisito e caso de uso."
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar artefatos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/1/projeto/1/artefato/listar",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"artefato",
+								"listar"
+							]
+						},
+						"description": "Listar todos os artefatos do projeto"
+					},
+					"response": []
+				},
+				{
+					"name": "Salvar artefato com Requisito/Caso de uso Copy",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"nome\": \"Alterar Artefato/Requisito/Caso de uso\",\n\t\"descricao\": \"Alterar descricao artefato requisito e caso de uso\",\n\t\"idRequisito\": \"1\",\n\t\"idCasoDeUso\": \"1\"\n}"
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/1/projeto/1/artefato/1",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"artefato",
+								"1"
+							]
+						},
+						"description": "Anexar artefato com requisito e caso de uso."
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar artefato/requisito",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/1/projeto/1/artefato/1",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"artefato",
+								"1"
+							]
+						},
+						"description": "Deletar artefato de um requisito.\n\n**IMPORTANTE**\nAo deletar o artefato o arquivo também será removido."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Requisito/Artefato",
+			"item": [
+				{
+					"name": "Salvar artefato/requisito sem Caso de uso",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"nome\": \"Artefato/Requisito\",\n\t\"descricao\": \"Descricao artefato requisito sem caso de uso\",\n\t\"idRequisito\": 1\n}"
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/1/projeto/1/artefato",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"artefato"
+							]
+						},
+						"description": "Anexar artefato em requisito."
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar artefato/requisito",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/1/projeto/1/artefato/listaRequisito",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"artefato",
+								"listaRequisito"
+							]
+						},
+						"description": "Buscar artefatos de requisito."
+					},
+					"response": []
+				},
+				{
+					"name": "Alterar artefato/requisito sem Caso de uso",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"nome\": \"Atualizar Artefato/Requisito\",\n\t\"descricao\": \"Atualizar descricao artefato requisito sem caso de uso\",\n\t\"idRequisito\": 1\n}"
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/1/projeto/1/artefato/1",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"artefato",
+								"1"
+							]
+						},
+						"description": "Alterar artefato em requisito."
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "e0dfc41c-14ff-40e4-a490-0970067540c4",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "13f59698-216a-4b96-8984-d5ca2d6b2c46",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Caso de Uso/Artefato",
+			"item": [
+				{
+					"name": "Salvar artefato/caso de uso sem Requisito",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"nome\": \"Artefato/CasoDeUso\",\n\t\"descricao\": \"Descricao artefato caso de uso sem requisito\",\n\t\"idCasoDeUso\": 1\n}"
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/1/projeto/1/artefato",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"artefato"
+							]
+						},
+						"description": "Anexar artefato em caso de uso."
+					},
+					"response": []
+				},
+				{
+					"name": "Buscar artefato/caso de uso",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/1/projeto/1/artefato/listaCasoDeUso",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"artefato",
+								"listaCasoDeUso"
+							]
+						},
+						"description": "Buscar artefatos de caso de uso ."
+					},
+					"response": []
+				},
+				{
+					"name": "Alterar artefato/caso de uso sem Requisito",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "Bearer {{access_token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"nome\": \"Atualizar Artefato asdadasd\",\n\t\"descricao\": \"Atualizar descricao artefato asdad\"\n}"
+						},
+						"url": {
+							"raw": "{{URL}}api/usuario/1/projeto/1/artefato/1",
+							"host": [
+								"{{URL}}api"
+							],
+							"path": [
+								"usuario",
+								"1",
+								"projeto",
+								"1",
+								"artefato",
+								"1"
+							]
+						},
+						"description": "Alterar artefato em caso de uso."
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
